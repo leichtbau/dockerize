@@ -33,13 +33,19 @@ func runCmd(ctx context.Context, cancel context.CancelFunc, cmd string, args ...
 	go func() {
 		defer wg.Done()
 
-		select {
-		case sig := <-sigs:
-			log.Printf("Received signal: %s\n", sig)
-			signalProcessWithTimeout(process, sig)
-			cancel()
-		case <-ctx.Done():
-			// exit when context is done
+		for {
+			select {
+			case sig := <-sigs:
+				log.Printf("Received signal: %s\n", sig)
+				signalProcessWithTimeout(process, sig)
+				if sig != syscall.SIGHUP {
+					cancel()
+					break
+				}
+			case <-ctx.Done():
+				// exit when context is done
+				break
+			}
 		}
 	}()
 
