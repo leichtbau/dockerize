@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+- 12
+
+services:
+- docker
+
+matrix:
+  include:
+  - os: linux
+    arch: amd64
+    env: ARCH=amd64
+  - os: linux
+    arch: arm64
+    env: ARCH=arm32v7
+
+# Nothing to do
+install:
+
+script:
+- npx dockerfile-template -d ARCH=$ARCH Dockerfile.template | docker build -f - -t docker.pkg.github.com/leichtbau/dockerize/$ARCH:$TRAVIS_TAG .
+
+deploy:
+  - provider: script
+    on:
+      tags: true
+    script: bash scripts/docker_push_ci
