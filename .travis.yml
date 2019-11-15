@@ -18,7 +18,7 @@ matrix:
 install:
 
 script:
-- npx dockerfile-template -d ARCH=$ARCH Dockerfile.template | docker build -f - -t docker.pkg.github.com/leichtbau/dockerize/$ARCH:$TRAVIS_TAG .
+- npx dockerfile-template -d ARCH=$ARCH Dockerfile.template | docker build -f - -t docker.pkg.github.com/leichtbau/dockerize/$ARCH:latest .
 
 deploy:
   - provider: script
