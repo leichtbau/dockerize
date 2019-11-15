@@ -18,7 +18,7 @@ matrix:
 install:
 
 script:
-- npx dockerfile-template -d ARCH=$ARCH Dockerfile.template | docker build -f - -t docker.pkg.github.com/leichtbau/dockerize/$ARCH:latest .
+- npx dockerfile-template -d ARCH=$ARCH Dockerfile.template | docker build -f - -t docker.pkg.github.com/leichtbau/dockerize/dockerize-$ARCH:latest .
 
 deploy:
   - provider: script
