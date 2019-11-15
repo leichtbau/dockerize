@@ -1,4 +1,6 @@
-FROM %%ARCH%%/golang:1.13.4-alpine3.10 AS binary
+ARG ARCH=amd64
+
+FROM $ARCH/golang:1.13.4-alpine3.10 AS binary
 RUN apk -U add openssl git
 
 ADD . /go/src/github.com/jwilder/dockerize
@@ -8,8 +10,7 @@ RUN go get github.com/robfig/glock
 RUN glock sync -n < GLOCKFILE
 RUN go install
 
-FROM alpine:3.10
-MAINTAINER Robert Schmid <r.schmid@outlook.com>
+FROM $ARCH/alpine:3.10
 
 COPY --from=binary /go/bin/dockerize /usr/local/bin
 
